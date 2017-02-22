@@ -1,3 +1,5 @@
+# start from command line: python .\startSimpleCloudFacade.py -p 8080
+
 import optparse
 import ScfServer.server
 
