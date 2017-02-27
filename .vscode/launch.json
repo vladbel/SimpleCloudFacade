@@ -8,7 +8,7 @@
             "request": "launch",
             "stopOnEntry": true,
             "pythonPath": "${config.python.pythonPath}",
-            "program": "${file}",
+            "program": "${workspaceRoot}/startSimpleCloudFacade.py",
             "cwd": "${workspaceRoot}",
             "debugOptions": [
                 "WaitOnAbnormalExit",
@@ -16,7 +16,7 @@
                 "RedirectOutput"
             ],
             "args": [
-                "--port", "8080"
+                "--port", "8085"
             ]
         }
     ]

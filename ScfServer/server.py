@@ -6,9 +6,11 @@
 import http.server
 from json.encoder import JSONEncoder
 
+request_count = 0
+
 class FacadeRequestHandler(http.server.BaseHTTPRequestHandler):
     """Request handler for the cloud facade HTTP server"""
-
+    
     def do_GET(self):
         """HTTP GET handler"""
         self.handle_request("GET")
@@ -26,13 +28,16 @@ class FacadeRequestHandler(http.server.BaseHTTPRequestHandler):
         self.handle_request("DELETE")
 
     def handle_request(self, method):
+        global request_count
+        request_count += 1
         result = {
             "method":method,
-            "path":self.path
+            "path":self.path,
+            "value": request_count
         }
         if "Content-Length" in self.headers:
             result["body"] = self.rfile.read(int(self.headers["Content-Length"])).decode("UTF-8")
-        
+
         encoder = JSONEncoder()
         content = encoder.encode(result)
         self.wfile.write(bytes(content, "UTF-8"))
