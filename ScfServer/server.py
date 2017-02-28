@@ -8,7 +8,7 @@ from json.encoder import JSONEncoder
 
 request_count = 0
 
-class FacadeRequestHandler(http.server.BaseHTTPRequestHandler):
+class FacadeRequestHandler(http.server.SimpleHTTPRequestHandler):
     """Request handler for the cloud facade HTTP server"""
     
     def do_GET(self):
@@ -35,13 +35,19 @@ class FacadeRequestHandler(http.server.BaseHTTPRequestHandler):
             "path":self.path,
             "value": request_count
         }
-        if "Content-Length" in self.headers:
-            result["body"] = self.rfile.read(int(self.headers["Content-Length"])).decode("UTF-8")
-
+        
         encoder = JSONEncoder()
         content = encoder.encode(result)
+        self.set_headers()
         self.wfile.write(bytes(content, "UTF-8"))
+        
+
+
+    def set_headers(self):
         self.send_response(200)
+        self.send_header('Content-type', 'application/json; charset=UTF-8')
+        self.end_headers()
+        
 
 
 def serve(port):
