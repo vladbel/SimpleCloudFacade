@@ -5,7 +5,7 @@
 
 import http.server
 from json.encoder import JSONEncoder
-import ScfServer.counter
+from ScfServer.counter import Counter
 
 request_counter = None
 
@@ -31,7 +31,7 @@ class FacadeRequestHandler(http.server.SimpleHTTPRequestHandler):
     def handle_request(self, method):
         global request_counter
         if (request_counter == None):
-            request_counter = ScfServer.counter.Counter()
+            request_counter = Counter()
         result = {
             "method":method,
             "path":self.path,
