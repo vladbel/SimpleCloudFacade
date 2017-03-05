@@ -5,8 +5,9 @@
 
 import http.server
 from json.encoder import JSONEncoder
+from ScfServer.counter import Counter
 
-request_count = 0
+request_counter = None
 
 class FacadeRequestHandler(http.server.SimpleHTTPRequestHandler):
     """Request handler for the cloud facade HTTP server"""
@@ -28,12 +29,13 @@ class FacadeRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.handle_request("DELETE")
 
     def handle_request(self, method):
-        global request_count
-        request_count += 1
+        global request_counter
+        if (request_counter == None):
+            request_counter = Counter()
         result = {
             "method":method,
             "path":self.path,
-            "value": request_count
+            "value": request_counter.get_value()
         }
         
         encoder = JSONEncoder()
